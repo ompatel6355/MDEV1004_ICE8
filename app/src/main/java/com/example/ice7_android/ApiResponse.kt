@@ -1,6 +1,7 @@
-package com.example.ice7_android;
-import com.squareup.moshi.Json;
-import com.squareup.moshi.JsonClass;
+package com.example.ice7_android
+
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ApiResponse<T>(

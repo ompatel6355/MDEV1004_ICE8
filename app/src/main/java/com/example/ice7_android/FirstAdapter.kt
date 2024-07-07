@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ice7_android.databinding.TextRowItemBinding
 
 class FirstAdapter(private var dataSet: List<Movie>) :
-    RecyclerView.Adapter<FirstAdapter.ViewHolder>()
+RecyclerView.Adapter<FirstAdapter.ViewHolder>()
 {
     class ViewHolder(val binding: TextRowItemBinding): RecyclerView.ViewHolder(binding.root)
 
