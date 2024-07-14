@@ -1,15 +1,19 @@
 package com.example.ice7_android
 
+import com.example.ice7_android.databinding.TextRowItemBinding
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ice7_android.databinding.TextRowItemBinding
 
 class FirstAdapter(private var dataSet: List<Movie>) :
-RecyclerView.Adapter<FirstAdapter.ViewHolder>()
+    RecyclerView.Adapter<FirstAdapter.ViewHolder>()
 {
-    class ViewHolder(val binding: TextRowItemBinding): RecyclerView.ViewHolder(binding.root)
+    var onMovieClick: ((Movie)-> Unit)? = null
 
+
+    class ViewHolder(val binding: TextRowItemBinding) : RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder
     {
         val binding = TextRowItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -24,18 +28,44 @@ RecyclerView.Adapter<FirstAdapter.ViewHolder>()
         viewHolder.binding.title.text = movie.title
         viewHolder.binding.studio.text = movie.studio
 
+        viewHolder.binding.root.setOnClickListener{
+            onMovieClick?.invoke(dataSet[position])
+        }
+
         val rating = movie.criticsRating
 
         if(rating != null)
         {
             viewHolder.binding.rating.text = rating.toString()
 
+            // Set background drawable based on rating
+            when {
+                rating > 7 -> {
+                    viewHolder.binding.rating.setBackgroundResource(R.drawable.background_green)
+                    viewHolder.binding.rating.setTextColor(Color.BLACK)
+                }
+                rating > 5 -> {
+                    viewHolder.binding.rating.setBackgroundResource(R.drawable.background_yellow)
+                    viewHolder.binding.rating.setTextColor(Color.BLACK)
+                }
+                else -> {
+                    viewHolder.binding.rating.setBackgroundResource(R.drawable.background_red)
+                    viewHolder.binding.rating.setTextColor(Color.WHITE)
+                }
+            }
         }
         else
         {
             viewHolder.binding.rating.text = "N/A"
+            viewHolder.binding.rating.setBackgroundResource(R.drawable.background_gray)
+            viewHolder.binding.rating.setTextColor(Color.WHITE)
         }
     }
-
+    // Method to update the dataset
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMovies(newMovies: List<Movie>) {
+        dataSet = newMovies
+        notifyDataSetChanged()
+    }
 
 }
